@@ -32,4 +32,9 @@ export class SortService
               // )
   }
   
+  public requestNewList(list_size)
+  {
+    return this.http.get(this.backend_url + "/generate_list")
+  }
+
 }
