@@ -7,13 +7,15 @@ import { SorterComponent } from './sorter/sorter.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SorterComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
