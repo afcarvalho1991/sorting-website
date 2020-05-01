@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SortService } from '../http.service';
+import { SoundService } from '../sound.service';
 
 @Component({
   selector: 'app-sorter',
@@ -23,8 +24,9 @@ export class SorterComponent implements OnInit
 
   // Problem (variables)
   list_numbers    // TODO: data type
+  player
 
-  constructor(private sortService: SortService) {  }
+  constructor(private sortService: SortService, private sound:SoundService) {  }
 
   ngOnInit(): void 
   {
@@ -41,8 +43,7 @@ export class SorterComponent implements OnInit
     this.generate_shuffle_list()
 
     // Sound settings
-    this.useSound      = true
-
+    this.useSound      = true    
   }
 
   generate_shuffle_list()
@@ -54,10 +55,12 @@ export class SorterComponent implements OnInit
                                         err =>{ console.log("[SortService] ERROR - requestNewList(listSize) - "+err)}
                             )
   }
-  sound_sort() { } // https://www.npmjs.com/package/play-sound
+  sound_sort() { this.sound.play() } 
 
   change_list_size(value)     { this.list_size = value }
   change_sorting_speed(value) { this.sorting_speed = value }
   change_sort_algo(value)     { this.algo_selected = value }
-  check(){ console.log(this.algo_selected,this.lst_algorithms)}
+  
+  check(){ this.sound_sort() }
+  
 }
