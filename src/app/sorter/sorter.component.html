@@ -5,12 +5,13 @@
     <button type="sort"    class="btn btn-warning">Sort it!</button>
     <div class="btn-divider"></div>
     <button type="shuffle" class="btn btn-danger">Shuffle!</button>
+    <div class="btn-divider"></div>    
 </div>
 <p></p>
 <div class="row">
     <div class="col-sm-8">
         <figure>
-            <img src="https://www.w3schools.com/tags/pic_trulli.jpg" alt="Trulli" style="width:100%">
+            <img src="https://www.bitcoinblockhalf.com/images/bitcoin-inflation-chart.png" alt="Trulli" style="width:100%">
             <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
         </figure>
     </div>
@@ -38,20 +39,23 @@
                 <hr>
                 <!-- sorting speed -->
                 <fieldset class="form-group">
-                    <label for="customRange1">Sorting Speed:</label>
-                    <input type="range" class="custom-range" id="customRange1">
-                </fieldset>
-                <p></p>
-                <fieldset class="form-group">
+                    <label for="sorting_speed">Sorting Speed:</label>
+                    <input type="range" class="custom-range" id="sorting_speed">
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked="">
+                            <input class="form-check-input" id="useSound" type="checkbox" value="" checked="">
                             Sound (activated)
                         </label>
                     </div>
                 </fieldset>
             </fieldset>
         </form>
+        <label class="form-check-label">
+            <input type="color" id="favcolor" name="favcolor" value="#ff8000">
+            Select a color for the array bars
+        </label>
+        
     </div>
+
 
 <p></p>
