@@ -1,6 +1,6 @@
 <p></p>
 <div class="btn-div">
-    <button type="step"    class="btn btn-success">Step!</button>
+    <button type="step"    class="btn btn-success" (click)="check()">Step!</button>
     <div class="btn-divider"></div>
     <button type="sort"    class="btn btn-warning">Sort it!</button>
     <div class="btn-divider"></div>
@@ -10,37 +10,46 @@
 <p></p>
 <div class="row">
     <div class="col-sm-8">
-        <figure>
-            <img src="https://www.bitcoinblockhalf.com/images/bitcoin-inflation-chart.png" alt="Trulli" style="width:100%">
-            <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
-        </figure>
+        <div id="barChart">
+            <div class="bar" style="background-color:lightblue;     width:5px;height:1px"> </div>
+            <div class="bar" style="background-color:lightgreen;    width:5px;height:10px"> </div>
+            <div class="bar" style="background-color:salmon;        width:5px;height:50px"> </div>
+            <div class="bar" style="background-color:lightblue;     width:5px;height:250px"> </div>
+            <div class="bar" style="background-color:lightgreen;    width:5px;height:350px"> </div>
+            <div class="bar" style="background-color:salmon;        width:5px;height:550px"> </div>
+        </div>
     </div>
     <div class="col-sm-4">
         <form>
             <fieldset>
                 <!-- list size -->
-                <fieldset class="form-group">
-                    <label for="customRange1">List size:</label>
-                    <input type="range" class="custom-range" id="list_size">
-                </fieldset>
-                <p></p>
                 <!-- Sorting Algorithm -->
                 <div class="form-group">
                     <label for="exampleSelect1">Sorting Algorithm:</label>
-                    <select class="form-control" id="option_sorting_algo">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                <select class="form-control" ng-model="algo_selected" (change) ="change_sort_algo($event.target.value)">
+                        <option *ngFor="let a of lst_algorithms" value="{{a}}">{{a}}</option>
                     </select>
                 </div>
+                <p></p>
+                <fieldset class="form-group">
+                    <label for="lst_sizeRange">List size (currently is {{list_size}}):</label>
+                    <input type="range" class="custom-range"
+                                        id= "lst_sizeRange"
+                                        min="1" max="{{MAX_ARRAY_SIZE}}" step="1" 
+                                        value="{{list_size}}"
+                                        (input)="change_list_size($event.target.value)">
+                </fieldset>
                 <hr>
                 <hr>
                 <!-- sorting speed -->
                 <fieldset class="form-group">
-                    <label for="sorting_speed">Sorting Speed:</label>
-                    <input type="range" class="custom-range" id="sorting_speed">
+                    <label for="sorting_speed">Sorting Speed ({{sorting_speed}} operation/second):</label>
+                    <input type="range" class="custom-range"
+                                        id="sorting_speed"
+                                        min="1" max="{{MAX_SPEED}}" step="1" 
+                                        value="{{sorting_speed}}"
+                                        (input)="change_sorting_speed($event.target.value)">
+
                     <div class="form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" id="useSound" type="checkbox" value="" checked="">
@@ -51,8 +60,13 @@
             </fieldset>
         </form>
         <label class="form-check-label">
-            <input type="color" id="bars_color" name="favcolor" value="#ff8000">
-            Select a color for the array bars
+            <input type="color" id="bars_color" name="favcolor" value="#73A839">
+            Select base bars color 
+        </label>
+        <p></p>
+        <label class="form-check-label">
+            <input type="color" id="active_bars_color" name="favcolor" value="#c71c22">
+            Select being compared bars color 
         </label>
         
     </div>

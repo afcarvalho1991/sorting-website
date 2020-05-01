@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { SortService } from '../http.service';
 
 @Component({
@@ -14,10 +13,10 @@ export class SorterComponent implements OnInit
   MAX_ARRAY_SIZE:number = 5000;
   
   // View (data)
-  lst_algorithms          // Possible algorithms - TODO: lst_algorithms data type
+  lst_algorithms        // Possible algorithms - TODO: lst_algorithms data type
   
   // View (options)
-  option_sorting_algo   // TODO: data type
+  algo_selected:string
   list_size : number   
   sorting_speed         // TODO: data type
   useSound              // TODO: data type
@@ -31,12 +30,12 @@ export class SorterComponent implements OnInit
   {
     this.lst_algorithms = this.sortService
                               .getListSortingAlgorithms()
-                              .subscribe( data=>{ this.lst_algorithms = data; },
+                              .subscribe( data=>{ this.lst_algorithms = data; this.algo_selected= data[0] },
                                           err =>{ console.log("[SortService] ERROR - getListSortingAlgorithms() - "+err)}
                               )
     // Generate a random sorting and list
-    this.sorting_speed = Math.random()*this.MAX_SPEED+1
-    this.list_size     = Math.random()*this.MAX_ARRAY_SIZE+1
+    this.sorting_speed = Math.trunc(Math.random()*this.MAX_SPEED+1)
+    this.list_size     = Math.trunc(Math.random()*this.MAX_ARRAY_SIZE+1)
     
     // Creates new list
     this.generate_shuffle_list()
@@ -56,4 +55,9 @@ export class SorterComponent implements OnInit
                             )
   }
   sound_sort() { } // https://www.npmjs.com/package/play-sound
+
+  change_list_size(value)     { this.list_size = value }
+  change_sorting_speed(value) { this.sorting_speed = value }
+  change_sort_algo(value)     { this.algo_selected = value }
+  check(){ console.log(this.algo_selected,this.lst_algorithms)}
 }

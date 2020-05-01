@@ -3,3 +3,14 @@
     align-items: center;
     display:inline-block;
 }
+#barChart {
+    vertical-align: bottom;
+  }
+
+.bar 
+{
+  background-color: transparent;
+  display: inline-block;
+  width: 10px;
+  height: 0px;
+}

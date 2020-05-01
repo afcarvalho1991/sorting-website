@@ -7,13 +7,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class SortService 
 {
-  private backend_url:string = "http://localhost:8080" // this should be provided by a DNS or something :)
+  private backend_url:string = "http://127.0.0.1:5000" // this should be provided by a DNS or something :)
   
   constructor(private http: HttpClient ) { }
 
   public getListSortingAlgorithms()// TODO: return type
   {
-    return this.http .get(this.backend_url + "/sortingAlgorithms")
+    return this.http .get(this.backend_url + "/sorting_algos")
               // .subscribe(
               //               data=>{ this.lst_algorithms = data; },
               //               err =>{ console.log("[SortService] getListSortingAlgorithms() - "+err)}
@@ -34,7 +34,7 @@ export class SortService
   
   public requestNewList(list_size)
   {
-    return this.http.get(this.backend_url + "/generate_list")
+    return this.http.get(this.backend_url + "/generate_list/" + list_size)
   }
 
 }
