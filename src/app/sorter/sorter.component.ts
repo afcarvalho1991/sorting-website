@@ -1,8 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SortService } from '../http.service';
-import { SoundService } from '../sound.service';
-import { Observable } from 'rxjs';
-import { debounceTime} from 'rxjs/operators';
 import { State } from '../state.model';
 
 @Component({
@@ -30,16 +27,13 @@ export class SorterComponent implements OnInit
   
   bars_color 
   active_bars_color
-  
-  useSound              // TODO: data type
-  player          // TODO: data type
-
+ 
   // Problem (variables)
   list_numbers    // TODO: data type
   sort_reply  : State[]
   lst_compares
 
-  constructor(private sortService: SortService, private sound:SoundService, private cd: ChangeDetectorRef) {  }
+  constructor(private sortService: SortService, private cd: ChangeDetectorRef) {  }
 
   ngOnInit(): void 
   {
@@ -54,14 +48,14 @@ export class SorterComponent implements OnInit
     this.sorting_speed = Math.trunc(Math.random()*this.MAX_SPEED+1)
     this.list_size     = Math.trunc(Math.random()*this.MAX_ARRAY_SIZE+1)
     
-    // Creates new list
-    this.generate_shuffle_list()
-
-    // Color and Sound settings
-    this.useSound           = true    
+    // Color and Sound settings (default colors)
     this.bars_color         = '#73A839'
     this.active_bars_color  = '#c71c22'
-
+    
+    // Creates new list
+    this.generate_shuffle_list()
+    
+                                                              
   }
 
   generate_shuffle_list()
@@ -69,7 +63,10 @@ export class SorterComponent implements OnInit
     // Request a new fresh list
     this.list_numbers = this.sortService
                             .requestNewList(this.list_size)
-                            .subscribe( (data:Float32Array)=> { this.list_numbers = data; },
+                            .subscribe( (data:Float32Array)=> 
+                                                              { this.list_numbers = data; 
+                                                                this.cd.detectChanges(); // causes changes to be visable
+                                                              },
                                         err =>{ console.log("[SortService] ERROR - requestNewList(listSize) - "+err)}
                             )
   }
@@ -90,14 +87,7 @@ export class SorterComponent implements OnInit
   change_sort_algo(value)         { this.algo_selected = value }
   change_color_bars_active(value) { this.active_bars_color = value}
   change_color_bars(value)        { this.bars_color = value}
-  sound_sort()                    { this.sound.play() } 
 
-  check()
-  { 
-    // this.sound_sort()
-    console.log(this.bars_color)
-  }
-  
   get_bar_width()     { return 3.5 } // TODO automatically adjust this
   get_bar_heigth(elem){ return this.MAX_BAR_HEIGHT*elem }
 
@@ -124,7 +114,7 @@ export class SorterComponent implements OnInit
                             // Mark indexes with different color
                             // console.log("Mark indexes with different color")
                             this.cd.detectChanges();  
-                          }, 10);
+                          }, 1); // Frequency (hz)
                           // console.log(idx_a+" "+idx_b+" "+state[2].length)
                          
                         }
