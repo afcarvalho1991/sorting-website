@@ -29,7 +29,7 @@ def sort( sorting_fun_key:str, lst:list, include_states:bool) -> list:
     lst, states = functions_dict[sorting_fun_key](lst)
     
     if not include_states: states = []
-    return lst, states
+    return {"result":lst, "states":states}
 
 def is_sort_completed(lst:list) -> bool:
     ''' validates if a lst is sorted (ascendingly) '''

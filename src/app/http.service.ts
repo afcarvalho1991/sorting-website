@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class SortService
 
   public getListSortingAlgorithms()// TODO: return type
   {
-    return this.http .get(this.backend_url + "/sorting_algos")
+    return this.http.get<Array<String>>(this.backend_url + "/sorting_algos")
+                     
               // .subscribe(
               //               data=>{ this.lst_algorithms = data; },
               //               err =>{ console.log("[SortService] getListSortingAlgorithms() - "+err)}
@@ -25,7 +27,7 @@ export class SortService
     const options = { params: new HttpParams().set("list" , listNumbers) } ; 
     // console.log("options = ",options)
 
-    return this.http .get(this.backend_url + "/complete", options)
+    return this.http .get<Boolean>(this.backend_url + "/complete", options)
               // .subscribe(
               //               data=> { this.current_list = data; },
               //               err => { console.log("[SortService] completed_sort(listNumbers) - "+err)}
@@ -36,5 +38,14 @@ export class SortService
   {
     return this.http.get(this.backend_url + "/generate_list/" + list_size)
   }
+  public requestSort(sorting_algo:string, listNumbers, showState:boolean)
+  {
+    const options = { params: new HttpParams().set("list" , JSON.stringify(listNumbers))
+                                              .set("states", JSON.stringify(showState))
+                    } ; 
+    const url = this.backend_url + "/sort/"+sorting_algo
+    
+    return this.http.get(url, options)
 
+  }
 }

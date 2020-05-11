@@ -1,33 +1,41 @@
 <p></p>
+
 <div class="btn-div">
     <button type="step"    class="btn btn-success" (click)="check()">Step!</button>
     <div class="btn-divider"></div>
-    <button type="sort"    class="btn btn-warning">Sort it!</button>
+    <button type="sort"    class="btn btn-warning" (click)="play_sort_animation()">Sort it!</button>
     <div class="btn-divider"></div>
-    <button type="shuffle" class="btn btn-danger">Shuffle!</button>
-    <div class="btn-divider"></div>    
+    <button type="shuffle" class="btn btn-danger" (click)="generate_shuffle_list()">Shuffle!</button>
+    <div class="btn-divider"></div>
 </div>
 <p></p>
 <div class="row">
+    <!-- list sort canvas -->
     <div class="col-sm-8">
         <div id="barChart">
-            <div class="bar" style="background-color:lightblue;     width:5px;height:1px"> </div>
-            <div class="bar" style="background-color:lightgreen;    width:5px;height:10px"> </div>
-            <div class="bar" style="background-color:salmon;        width:5px;height:50px"> </div>
-            <div class="bar" style="background-color:lightblue;     width:5px;height:250px"> </div>
-            <div class="bar" style="background-color:lightgreen;    width:5px;height:350px"> </div>
-            <div class="bar" style="background-color:salmon;        width:5px;height:550px"> </div>
+            <div    class="bar" 
+                    *ngFor="let elem of list_numbers" 
+                    [style.background-color]="bars_color"
+                    [style.height.px]="get_bar_heigth(elem)"
+                    [style.width.px]="get_bar_width()"
+            > 
+            </div>
+            
         </div>
     </div>
+    <!-- options -->
     <div class="col-sm-4">
         <form>
             <fieldset>
+                <div class="form-check">
+                    
+                </div>   
                 <!-- list size -->
                 <!-- Sorting Algorithm -->
                 <div class="form-group">
-                    <label for="exampleSelect1">Sorting Algorithm:</label>
-                <select class="form-control" ng-model="algo_selected" (change) ="change_sort_algo($event.target.value)">
-                        <option *ngFor="let a of lst_algorithms" value="{{a}}">{{a}}</option>
+                    <label for="">Sorting Algorithm:</label>
+                    <select class="form-control" (change)="change_sort_algo($event.target.value)">
+                            <option *ngFor="let a of lst_algorithms" value="{{a}}">{{a}}</option>
                     </select>
                 </div>
                 <p></p>
@@ -42,33 +50,35 @@
                 <hr>
                 <hr>
                 <!-- sorting speed -->
-                <fieldset class="form-group">
-                    <label for="sorting_speed">Sorting Speed ({{sorting_speed}} operation/second):</label>
-                    <input type="range" class="custom-range"
-                                        id="sorting_speed"
-                                        min="1" max="{{MAX_SPEED}}" step="1" 
-                                        value="{{sorting_speed}}"
-                                        (input)="change_sorting_speed($event.target.value)">
+            
+                <label for="sorting_speed">Sorting Speed ({{sorting_speed}} operation/second):</label>
+                <input type="range" class="custom-range"
+                                    id="sorting_speed"
+                                    min="1" max="{{MAX_SPEED}}" step="1" 
+                                    value="{{sorting_speed}}"
+                                    (input)="change_sorting_speed($event.target.value)">
 
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" id="useSound" type="checkbox" value="" checked="">
-                            Sound (activated)
-                        </label>
-                    </div>
-                </fieldset>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" id="useSound" type="checkbox" value="" checked="">
+                        Sound (activated)
+                    </label>
+                </div>
+                <p></p>
+                <label class="form-check-label">
+                    <!-- fix this ts and html need to match color this should set the value @ ts -->
+                    <input type="color"  (change)="change_color_bars($event.target.value)" value="#73A839">
+                    Select base bars color 
+                </label>
+                <p></p>
+                <label class="form-check-label">
+                    <!-- fix this ts and html need to match color this should set the value @ ts -->
+                    <input type="color"  (change)="change_color_bars_active($event.target.value)" value="#c71c22">
+                    Select being compared bars color 
+                </label>
+                
             </fieldset>
         </form>
-        <label class="form-check-label">
-            <input type="color" id="bars_color" name="favcolor" value="#73A839">
-            Select base bars color 
-        </label>
-        <p></p>
-        <label class="form-check-label">
-            <input type="color" id="active_bars_color" name="favcolor" value="#c71c22">
-            Select being compared bars color 
-        </label>
-        
     </div>
 
 

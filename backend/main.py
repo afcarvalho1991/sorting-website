@@ -1,5 +1,5 @@
 
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -10,16 +10,17 @@ import json
 import sorter
 
 @app.route('/generate_list/<int:size>', methods=['GET'])
-def generate_list(size:int): return json.dumps(sorter.generateList(size))
+def generate_list(size:int): return jsonify(sorter.generateList(size))
 
 @app.route('/sorting_algos', methods=['GET'])
-def sorting_algos(): return json.dumps(sorter.listSortingAlgos())
+def sorting_algos(): return jsonify(sorter.listSortingAlgos())
 
 @app.route('/sort/<string:sort_algo>/', methods=['GET'])
-def sort(sort_algo:str): return json.dumps(sorter.sort(sort_algo, _handle_list(),  _handle_states()))
+def sort(sort_algo:str): 
+    return jsonify(sorter.sort(sort_algo, _handle_list(),  _handle_states()))
 
-@app.route('/is_sorted/', methods=['GET'])
-def is_sorted(): return json.dumps(sorter.is_sort_completed(_handle_list()))
+@app.route('/is_sorted/', methods=['GET'],)
+def is_sorted(): return jsonify(sorter.is_sort_completed(_handle_list()))
 
 
 # Private functions
