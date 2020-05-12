@@ -27,11 +27,11 @@ export class SortService
     const options = { params: new HttpParams().set("list" , listNumbers) } ; 
     // console.log("options = ",options)
 
-    return this.http .get<Boolean>(this.backend_url + "/complete", options)
-              // .subscribe(
-              //               data=> { this.current_list = data; },
-              //               err => { console.log("[SortService] completed_sort(listNumbers) - "+err)}
-              // )
+    return this.http  .get<Boolean>(this.backend_url + "/complete", options)
+                      .subscribe(
+                                    data=> { data; },
+                                    err => { console.log("[SortService] completed_sort(listNumbers) - "+err)}
+                      )
   }
   
   public requestNewList(list_size)

@@ -1,8 +1,8 @@
 <p></p>
 
 <div class="btn-div">
-    <button type="step"    class="btn btn-success" (click)="play_sort_animation()">Step!</button>
-    <div class="btn-divider"></div>
+    <!-- <button type="step"    class="btn btn-success" (click)="play_sort_animation()">Step!</button>
+    <div class="btn-divider"></div> -->
     <button type="sort"    class="btn btn-warning" (click)="play_sort_animation()">Sort it!</button>
     <div class="btn-divider"></div>
     <button type="shuffle" class="btn btn-danger" (click)="generate_shuffle_list()">Shuffle!</button>
@@ -58,12 +58,12 @@
                                     value="{{sorting_speed}}"
                                     (input)="change_sorting_speed($event.target.value)">
 
-                <div class="form-check">
+                <!-- <div class="form-check">
                     <label class="form-check-label">
                         <input class="form-check-input" id="useSound" type="checkbox" value="" checked="">
                         Sound (activated)
                     </label>
-                </div>
+                </div> -->
                 <p></p>
                 <label class="form-check-label">
                     <!-- fix this ts and html need to match color this should set the value @ ts -->
@@ -71,11 +71,12 @@
                     Select base bars color 
                 </label>
                 <p></p>
-                <label class="form-check-label">
+                
+                <!-- <label class="form-check-label"> -->
                     <!-- fix this ts and html need to match color this should set the value @ ts -->
-                    <input type="color"  (change)="change_color_bars_active($event.target.value)" value="#c71c22">
-                    Select being compared bars color 
-                </label>
+                    <!-- <input type="color"  (change)="change_color_bars_active($event.target.value)" value="#c71c22"> -->
+                    <!-- Select being compared bars color  -->
+                <!-- </label> -->
                 
             </fieldset>
         </form>

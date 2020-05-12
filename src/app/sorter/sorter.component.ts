@@ -46,16 +46,18 @@ export class SorterComponent implements OnInit
                               )
     // Generate a random sorting and list
     this.sorting_speed = Math.trunc(Math.random()*this.MAX_SPEED+1)
-    this.list_size     = Math.trunc(Math.random()*this.MAX_ARRAY_SIZE+1)
+    // this.list_size     = Math.trunc(Math.random()*this.MAX_ARRAY_SIZE+1)
     
-    // Color and Sound settings (default colors)
+    // forcing to max size instead
+    this.list_size     = this.MAX_ARRAY_SIZE
+    
+    // Color settings (default colors)
     this.bars_color         = '#73A839'
     this.active_bars_color  = '#c71c22'
     
     // Creates new list
     this.generate_shuffle_list()
-    
-                                                              
+                                                     
   }
 
   generate_shuffle_list()
@@ -80,7 +82,10 @@ export class SorterComponent implements OnInit
 
     // // switch to new search observable each time the term changes
     // switchMap((term: string) => this.heroService.searchHeroes(term))
+    
     this.list_size =  value; 
+    // this.generate_shuffle_list()
+
   } //  does not update list to a new list otherwise would perform numerous request to the API
   
   change_sorting_speed(value)     { this.sorting_speed = value }
@@ -90,35 +95,36 @@ export class SorterComponent implements OnInit
 
   get_bar_width()     { return 3.5 } // TODO automatically adjust this
   get_bar_heigth(elem){ return this.MAX_BAR_HEIGHT*elem }
-
  
   play_sort_animation()
   {
-    this.sortService.requestSort(this.algo_selected, this.list_numbers, true)
-                    .subscribe 
-                    ( 
-                      (data) => 
-                      { 
-                        
-                        console.log(data)
-                        this.sort_reply = data["states"] 
-                        
-                        for (let state of this.sort_reply) 
-                        {
-                          setTimeout(() => 
+    if(!this.sortService.completed_sort(this.list_numbers)) 
+      this.sortService.requestSort(this.algo_selected, this.list_numbers, true)
+                      .subscribe 
+                      ( 
+                        (data) => 
+                        { 
+                          
+
+                          console.log(data)
+                          this.sort_reply = data["states"] 
+                          
+                          for (let state of this.sort_reply) 
                           {
-                            let idx_a  = state[0]
-                            let idx_b  = state[1]
-                            // Moved elements
-                            if (state[2].length!=0) this.list_numbers = state[2]
-                            // Mark indexes with different color
-                            // console.log("Mark indexes with different color")
-                            this.cd.detectChanges();  
-                          }, 1); // Frequency (hz)
-                          // console.log(idx_a+" "+idx_b+" "+state[2].length)
-                         
+                            setTimeout(() => 
+                            {
+                              let idx_a  = state[0]
+                              let idx_b  = state[1]
+                              // Moved elements
+                              if (state[2].length!=0) this.list_numbers = state[2]
+                              // Mark indexes with different color
+                              // console.log("Mark indexes with different color")
+                              this.cd.detectChanges();  
+                            }, 1); // Frequency (hz)
+                            // console.log(idx_a+" "+idx_b+" "+state[2].length)
+                          
+                          }
                         }
-                      }
-                    )
+                      )
   }
 }
