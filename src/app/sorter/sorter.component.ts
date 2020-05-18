@@ -11,9 +11,8 @@ import { State } from '../state.model';
 
 export class SorterComponent implements OnInit 
 {
-  MAX_SPEED:number      = 100;
-  MAX_ARRAY_SIZE:number = 200;
   
+  MAX_ARRAY_SIZE:number = 200;
   MAX_BAR_HEIGHT = 500;
   MAX_BARS_WIDTH = 600;
 
@@ -23,16 +22,15 @@ export class SorterComponent implements OnInit
   // View (options)
   algo_selected:string
   list_size : number   
-  sorting_speed         // TODO: data type
   
   bars_color 
   active_bars_color
+  compared_elements
  
   // Problem (variables)
   list_numbers    // TODO: data type
   sort_reply  : State[]
   lst_compares
-
   constructor(private sortService: SortService, private cd: ChangeDetectorRef) {  }
 
   ngOnInit(): void 
@@ -44,20 +42,16 @@ export class SorterComponent implements OnInit
                                                                 },
                                           err =>{ console.log("[SortService] ERROR - getListSortingAlgorithms() - "+err)}
                               )
-    // Generate a random sorting and list
-    this.sorting_speed = Math.trunc(Math.random()*this.MAX_SPEED+1)
-    // this.list_size     = Math.trunc(Math.random()*this.MAX_ARRAY_SIZE+1)
-    
-    // forcing to max size instead
-    this.list_size     = this.MAX_ARRAY_SIZE
     
     // Color settings (default colors)
     this.bars_color         = '#73A839'
     this.active_bars_color  = '#c71c22'
+
+    // forcing to max size instead
+    this.list_size     = this.MAX_ARRAY_SIZE
     
     // Creates new list
     this.generate_shuffle_list()
-                                                     
   }
 
   generate_shuffle_list()
@@ -65,9 +59,10 @@ export class SorterComponent implements OnInit
     // Request a new fresh list
     this.list_numbers = this.sortService
                             .requestNewList(this.list_size)
-                            .subscribe( (data:Float32Array)=> 
-                                                              { this.list_numbers = data; 
-                                                                this.cd.detectChanges(); // causes changes to be visable
+                            .subscribe( (data:Float32Array)=> { 
+                                                                this.list_numbers = data;
+                                                                this.compared_elements = Array<string>(this.list_size).fill(this.bars_color);
+                                                                this.cd.detectChanges();
                                                               },
                                         err =>{ console.log("[SortService] ERROR - requestNewList(listSize) - "+err)}
                             )
@@ -83,48 +78,64 @@ export class SorterComponent implements OnInit
     // // switch to new search observable each time the term changes
     // switchMap((term: string) => this.heroService.searchHeroes(term))
     
-    this.list_size =  value; 
-    // this.generate_shuffle_list()
+    this.list_size   = Number(value);
+    this.generate_shuffle_list()
 
   } //  does not update list to a new list otherwise would perform numerous request to the API
   
-  change_sorting_speed(value)     { this.sorting_speed = value }
   change_sort_algo(value)         { this.algo_selected = value }
-  change_color_bars_active(value) { this.active_bars_color = value}
-  change_color_bars(value)        { this.bars_color = value}
+  change_color_bars_active(value) { this.active_bars_color = value; }
+  change_color_bars(value)        { this.bars_color = value; this.compared_elements.fill(this.bars_color )}
 
   get_bar_width()     { return 3.5 } // TODO automatically adjust this
   get_bar_heigth(elem){ return this.MAX_BAR_HEIGHT*elem }
  
   play_sort_animation()
   {
-    if(!this.sortService.completed_sort(this.list_numbers)) 
-      this.sortService.requestSort(this.algo_selected, this.list_numbers, true)
+    // console.log(this.algo_selected, this.list_numbers.length,this.compared_elements,this.bars_color)
+    this.sortService.requestSort(this.algo_selected, this.list_numbers, true)
                       .subscribe 
                       ( 
                         (data) => 
                         { 
-                          
-
-                          console.log(data)
+                          // console.log(data)
                           this.sort_reply = data["states"] 
-                          
+                          let i = 0
                           for (let state of this.sort_reply) 
                           {
                             setTimeout(() => 
                             {
+                              i++; 
                               let idx_a  = state[0]
                               let idx_b  = state[1]
                               // Moved elements
-                              if (state[2].length!=0) this.list_numbers = state[2]
-                              // Mark indexes with different color
-                              // console.log("Mark indexes with different color")
-                              this.cd.detectChanges();  
-                            }, 1); // Frequency (hz)
-                            // console.log(idx_a+" "+idx_b+" "+state[2].length)
-                          
+                              if (state[2].length!=0) 
+                                this.list_numbers = state[2] 
+                                this.compared_elements.fill(this.bars_color);
+                              // // this can be improved by avoind sending the whole list every time
+                              
+                              // mark compared elements 
+                              if(i!=this.sort_reply.length) // last state is completed state so it should be skipped
+                              {
+                                this.compared_elements[idx_a] = this.active_bars_color
+                                this.compared_elements[idx_b] = this.active_bars_color
+                              }
+                              
+                              this.cd.detectChanges();
+                            }, 1);                          
                           }
+                          
                         }
-                      )
+                      )   
+  }
+  sort_button()
+  {
+    if(this.list_numbers.length!=this.list_size) this.generate_shuffle_list()
+
+    this.sortService.completed_sort(this.list_numbers)
+                    .subscribe(
+                                data=> { if(!data) this.play_sort_animation() },
+                                err => { console.log("[SortService] completed_sort(listNumbers) - "+err)}
+                    )
   }
 }

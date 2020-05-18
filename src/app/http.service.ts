@@ -24,14 +24,10 @@ export class SortService
   
   public completed_sort(listNumbers) // TODO: listNumbers data type, return type
   {
-    const options = { params: new HttpParams().set("list" , listNumbers) } ; 
+    const options = { params: new HttpParams().set("list" , JSON.stringify(listNumbers)) } ; 
     // console.log("options = ",options)
 
-    return this.http  .get<Boolean>(this.backend_url + "/complete", options)
-                      .subscribe(
-                                    data=> { data; },
-                                    err => { console.log("[SortService] completed_sort(listNumbers) - "+err)}
-                      )
+    return this.http  .get<Boolean>(this.backend_url + "/is_sorted", options)
   }
   
   public requestNewList(list_size)
