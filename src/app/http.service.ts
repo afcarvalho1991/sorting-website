@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class SortService 
 {
-  private backend_url:string = "http://127.0.0.1:5000" // this should be provided by a DNS or something :)
-  
+  // private backend_url:string = "http://127.0.0.1:5000" // this should be provided by a DNS or something :)
+  private backend_url:string = "http://ec2-35-180-137-18.eu-west-3.compute.amazonaws.com:5002"
   constructor(private http: HttpClient ) { }
 
   public getListSortingAlgorithms()// TODO: return type
