@@ -7,10 +7,13 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/sorter">Sorter</a>
+          <a class="nav-link" routerLink="/home" [routerLinkActive]="['active']">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/sorter" [routerLinkActive]="['active']">Sorter</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" [routerLinkActive]="['active']">About</a>
         </li>
       </ul>
     </div>
