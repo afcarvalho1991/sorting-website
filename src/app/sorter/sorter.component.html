@@ -65,14 +65,14 @@
                 <p></p>
                 <label class="form-check-label">
                     <!-- fix this ts and html need to match color this should set the value @ ts -->
-                    <input type="color"  (change)="change_color_bars($event.target.value)" value="#73A839">
+                    <input type="color"  (change)="change_color_bars($event.target.value)" value="{{bars_color}}">
                     Select base bars color 
                 </label>
                 <p></p>
                 
                 <label class="form-check-label">
                     <!-- fix this ts and html need to match color this should set the value @ ts -->
-                    <input type="color"  (change)="change_color_bars_active($event.target.value)" value="#c71c22">
+                    <input type="color"  (change)="change_color_bars_active($event.target.value)" value="{{active_bars_color}}">
                      Select being compared bars color
                 </label>
                 
