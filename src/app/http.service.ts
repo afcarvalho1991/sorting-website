@@ -41,7 +41,8 @@ export class SortService
                     } ; 
     const url = this.backend_url + "/sort/"+sorting_algo
     
-    return this.http.get(url, options)
+    // this can be improved by avoiding sending the whole list every time (waste of bandwidth)
+    return this.http.get(url, options) 
 
   }
 }

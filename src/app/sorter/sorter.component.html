@@ -11,12 +11,13 @@
 <div class="row">
     <!-- list sort canvas -->
     <div class="col-sm-8">
-        <div id="barChart">
+        <div id="barChart" #barChart>
             <div    class="bar" 
                     *ngFor="let elem of list_numbers; let i = index" 
                     [style.background-color]="compared_elements[i]"
                     [style.height.px]="get_bar_heigth(elem)"
-                    [style.width.px]="get_bar_width()"
+                    [style.width.%]="100/list_size"
+                    
             > 
             </div>
         </div>

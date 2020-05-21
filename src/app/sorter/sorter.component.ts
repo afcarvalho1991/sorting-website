@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { SortService } from '../http.service';
 import { State } from '../state.model';
 
@@ -12,10 +12,9 @@ import { State } from '../state.model';
 export class SorterComponent implements OnInit 
 {
   
-  MAX_ARRAY_SIZE:number = 200;
+  MAX_ARRAY_SIZE:number = 100;
   MAX_BAR_HEIGHT = 500;
-  MAX_BARS_WIDTH = 600;
-
+  
   // View (data)
   lst_algorithms        // Possible algorithms - TODO: lst_algorithms data type
   
@@ -27,6 +26,7 @@ export class SorterComponent implements OnInit
   active_bars_color
   compared_elements
  
+
   // Problem (variables)
   list_numbers    // TODO: data type
   sort_reply  : State[]
@@ -46,11 +46,13 @@ export class SorterComponent implements OnInit
     // Color settings (default colors)
     this.bars_color         = '#73A839'
     this.active_bars_color  = '#c71c22'
+    this.compared_elements = Array<string>(this.list_size).fill(this.bars_color);
 
     // forcing to max size instead
     this.list_size     = this.MAX_ARRAY_SIZE
     
     // Creates new list
+    
     this.generate_shuffle_list()
   }
 
@@ -60,7 +62,8 @@ export class SorterComponent implements OnInit
     this.list_numbers = this.sortService
                             .requestNewList(this.list_size)
                             .subscribe( (data:Float32Array)=> { 
-                                                                this.list_numbers = data;
+                                                                this.stop_sorting()
+                                                                this.list_numbers = data; // set data
                                                                 this.compared_elements = Array<string>(this.list_size).fill(this.bars_color);
                                                                 this.cd.detectChanges();
                                                               },
@@ -83,13 +86,45 @@ export class SorterComponent implements OnInit
 
   } //  does not update list to a new list otherwise would perform numerous request to the API
   
-  change_sort_algo(value)         { this.algo_selected = value }
+  change_sort_algo(value)         { this.stop_sorting(); this.algo_selected = value }
   change_color_bars_active(value) { this.active_bars_color = value; }
   change_color_bars(value)        { this.bars_color = value; this.compared_elements.fill(this.bars_color )}
 
-  get_bar_width()     { return 3.5 } // TODO automatically adjust this
   get_bar_heigth(elem){ return this.MAX_BAR_HEIGHT*elem }
  
+  stop_sorting()
+  {
+    this.sort_reply = [] // clear possible sorting being executed
+    this.compared_elements.fill(this.bars_color);
+  }
+  play_states() // recursive function that shows state after interval and calls to show the next states
+  {
+    if(this.sort_reply.length==0) 
+    {
+      this.compared_elements.fill(this.bars_color);
+      return; // sorting is allegedly completed
+    }
+    
+    let state = this.sort_reply.shift() // get & remove 1st element from the list 
+    
+    let idx_a  = state[0]
+    let idx_b  = state[1]
+    // Moved elements
+    if (state[2].length!=0) 
+      this.list_numbers = state[2] 
+      this.compared_elements.fill(this.bars_color);
+    // this can be improved by avoiding sending the whole list every time (waste of bandwidth)
+    
+    // mark compared elements 
+    
+    this.compared_elements[idx_a] = this.active_bars_color
+    this.compared_elements[idx_b] = this.active_bars_color
+    // show changes
+    this.cd.detectChanges();
+
+    // recursive call for next state
+    setTimeout( ()=>{this.play_states()}, 1); // Execute something() 1 second later.
+  }
   play_sort_animation()
   {
     // console.log(this.algo_selected, this.list_numbers.length,this.compared_elements,this.bars_color)
@@ -100,31 +135,7 @@ export class SorterComponent implements OnInit
                         { 
                           // console.log(data)
                           this.sort_reply = data["states"] 
-                          let i = 0
-                          for (let state of this.sort_reply) 
-                          {
-                            setTimeout(() => 
-                            {
-                              i++; 
-                              let idx_a  = state[0]
-                              let idx_b  = state[1]
-                              // Moved elements
-                              if (state[2].length!=0) 
-                                this.list_numbers = state[2] 
-                                this.compared_elements.fill(this.bars_color);
-                              // // this can be improved by avoind sending the whole list every time
-                              
-                              // mark compared elements 
-                              if(i!=this.sort_reply.length) // last state is completed state so it should be skipped
-                              {
-                                this.compared_elements[idx_a] = this.active_bars_color
-                                this.compared_elements[idx_b] = this.active_bars_color
-                              }
-                              
-                              this.cd.detectChanges();
-                            }, 1);                          
-                          }
-                          
+                          this.play_states() // recursively play states                          
                         }
                       )   
   }
