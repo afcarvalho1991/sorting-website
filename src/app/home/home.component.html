@@ -6,7 +6,7 @@
     <p class="lead">Have you ever seen how a sorting algorthm works?</p>
     <hr class="my-4">
     <p>This website shows how each sorting algorithm works.</p>
-    <img src="assets/demo.png" width="100%">
+    <img class="demo-img" src="assets/demo.png" width="100%" routerLink="/sorter" alt="go to ">
     <strong>You can choose the following algoritms:</strong>
     <ul>
         <li>Selection sort</li>
@@ -18,21 +18,4 @@
 
 
 
-<div class="card mb-3">
-    <h3 class="card-header">System architecture</h3>
-    <br>
-    <img src="assets/arch.png" alt="System architecture" width="90%" >
-    
-    <div class="card-body">
-      <p class="card-text">The ideia is to have the frontend request a backend to sort a list of numbers, and then play a small animation of the sorting algorithm operations.</p>
-      <p class="card-text">Each algorithm will play a different animation, due to its design.</p>
-    </div>
-    <button type="button" class="btn btn-success btn-playground" routerLink="/sorter"><strong>Take me to the playground!</strong></button>
-    <div class="alert alert-dismissible alert-danger">
-        <h4>Warning:</h4>
-        <strong>Calling a sorting algorithm should (most likely) never be done making request to a backend to offload the work. </strong>
-        <p>Nevertheless, the goal in this project is to showcase the communication between a frontend and backend services and what requests are executed when you pressing certain buttons.</p>
-    </div>
-
-  </div>
 
