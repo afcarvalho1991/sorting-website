@@ -95,3 +95,48 @@ def merge(array:list):
         return merge_internal(array, left_index, right_index, middle,left_compares)
     
     return merge_sort(array,0,len(array))
+
+def quick_sort(array):
+    def quick_sort_step(array, start, end):
+        def qk_partition(array, start, end, compares=[]):
+            pivot = array[start]
+            low = start + 1
+            high = end
+
+            while True:
+                # If the current value we're looking at is larger than the pivot
+                # it's in the right place (right side of pivot) and we can move left,
+                # to the next element.
+                # We also need to make sure we haven't surpassed the low pointer, since that
+                # indicates we have already moved all the elements to their correct side of the pivot
+                while low <= high and array[high] >= pivot:
+                    compares.append([start,high,[]])
+                    high = high - 1
+
+                # Opposite process of the one above
+                while low <= high and array[low] <= pivot:
+                    compares.append([start,low,[]])
+                    low = low + 1
+
+                # We either found a value for both high and low that is out of order
+                # or low is higher than high, in which case we exit the loop
+                if low <= high:
+                    array[low], array[high] = array[high], array[low]
+                    compares.append([start,low,array.copy()])
+                    # The loop continues
+                else:
+                    # We exit out of the loop
+                    break
+
+            array[start], array[high] = array[high], array[start]
+            compares.append([start,high,array.copy()])
+            return high, compares
+
+        if start >= end: return array,[[start, end,[]],]
+        p, compares = qk_partition(array, start, end)
+        array, compares_left  = quick_sort_step(array,   start,    p-1)
+        array, compares_right = quick_sort_step(array,   p+1,      end)
+        return array, compares + compares_left + compares_right
+    
+    return quick_sort_step(array,0,len(array)-1)
+    

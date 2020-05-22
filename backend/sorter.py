@@ -6,8 +6,8 @@ functions_dict = {
                     "Insertion sort": insertion, 
                     "Selection sort": selection, 
                     "Merge sort"    : merge, 
+                    "Quick sort"     : quick_sort, 
                     # "Heapsort"      : heap_step, 
-                    # "Quicksort"     : quick_step, 
                     # "Shellsort"     : shell_step,
                     # "Bubble sort"   : bubble_step
                  }
