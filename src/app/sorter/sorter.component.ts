@@ -102,6 +102,7 @@ export class SorterComponent implements OnInit
     if(this.sort_reply.length==0) 
     {
       this.compared_elements.fill(this.bars_color);
+      this.cd.detectChanges();
       return; // sorting is allegedly completed
     }
     
@@ -121,7 +122,6 @@ export class SorterComponent implements OnInit
     this.compared_elements[idx_b] = this.active_bars_color
     // show changes
     this.cd.detectChanges();
-
     // recursive call for next state
     setTimeout( ()=>{this.play_states()}, 1); // Execute something() 1 second later.
   }
