@@ -12,7 +12,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutComponent } from './about/about.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AboutSystemComponent } from './about-system/about-system.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
@@ -27,8 +26,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule,
-    AngularResizedEventModule
+    HttpClientModule
   ],
   providers: [{provide: LocationStrategy, useClass: PathLocationStrategy}],
   bootstrap: [AppComponent]
