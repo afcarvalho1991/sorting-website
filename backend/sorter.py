@@ -5,7 +5,7 @@ from sorting_algorithms import *
 functions_dict = { 
                     "Insertion sort": insertion, 
                     "Selection sort": selection, 
-                    # "Merge sort"    : merge_step, 
+                    "Merge sort"    : merge, 
                     # "Heapsort"      : heap_step, 
                     # "Quicksort"     : quick_step, 
                     # "Shellsort"     : shell_step,
@@ -18,11 +18,11 @@ def listSortingAlgos() -> list:
     global functions_dict
     return list(functions_dict.keys())
 
-def sort( sorting_fun_key:str, lst:list, include_states:bool) -> list:
+def sort( sorting_fun_key:str, lst:list, include_states:bool) -> dict:
     ''' 
         calls a specific sorting function based on "sorting_fun_key" using lst, computes the sorted lst:list.
         
-        returns: a list now a step further from being sorted :)
+        returns: a dictionary with a key "result" which contains the sorted list and a key "states" with the history of the sorted steps
     '''
     global functions_dict
     
@@ -53,7 +53,7 @@ def generateList(size:int) -> list:
     return lst
 
 if __name__ == "__main__":
-    lst = generateList(10000)
+    lst = generateList(10)
 
     lst_sorted = sorted(lst) # creates a new list for validation of sorting 
     
@@ -65,13 +65,15 @@ if __name__ == "__main__":
     
     print("list sorting algos = [{}]".format(", ".join(listSortingAlgos())))
     print()
-
+    include_states=True
     for algo_name in listSortingAlgos():
         # state={"i":0,"k":0}
         print(algo_name)
        
-        lst, states = sort(algo_ame,lst)
-        for state in states:
+        history_sorted = sort(algo_name, lst, include_states)
+
+        for state in history_sorted["states"]:
             print(state)
-        print("is_sort_completed(lst) = {}".format(is_sort_completed(lst)))
+        
+        print("is_sort_completed(lst) = {}".format(is_sort_completed(history_sorted["result"])))
     
