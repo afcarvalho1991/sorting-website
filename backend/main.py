@@ -2,6 +2,8 @@
 from flask import Flask, url_for, request, jsonify
 from flask_cors import CORS
 
+from waitress import serve
+
 app = Flask(__name__)
 CORS(app)
 
@@ -43,3 +45,6 @@ with app.test_request_context():
     
     print("\t"+url_for('sort',sort_algo="algo_name"))
     print("\t"+url_for('is_sorted'))
+
+from waitress import serve
+if __name__ == "__main__": serve(app, host="0.0.0.0", port=5001)
