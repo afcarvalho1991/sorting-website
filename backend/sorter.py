@@ -3,10 +3,10 @@ global functions_dict
 from sorting_algorithms import *
 
 functions_dict = { 
+                    "Merge sort"    : merge, 
+                    "Quick sort"    : quick_sort, 
                     "Insertion sort": insertion, 
                     "Selection sort": selection, 
-                    "Merge sort"    : merge, 
-                    "Quick sort"     : quick_sort, 
                     # "Heapsort"      : heap_step, 
                     # "Shellsort"     : shell_step,
                     # "Bubble sort"   : bubble_step
