@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class SorterService {
 
   // private backend_url:string = "http://127.0.0.1:5000" // this should be provided by a DNS or something :)
-  private backend_url:string = "http://ec2-15-236-90-165.eu-west-3.compute.amazonaws.com:5002"
+  private backend_url:string = "http://"+window.location.hostname+":5001"
   constructor(private http: HttpClient ) { }
 
   public getListSortingAlgorithms()// TODO: return type
