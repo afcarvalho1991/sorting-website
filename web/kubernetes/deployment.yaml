@@ -5,14 +5,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sorter-backend
+  name: sorter-service-web
+  namespace: test
 
 spec:
-  replicas: 10
+  replicas: 5
   
   selector: # is a list of labels that Pods must have in order for the Deployment to manage them
     matchLabels:
-      app: sorter-api
+      app: sorter-website
   
   minReadySeconds: 10
 
@@ -25,11 +26,12 @@ spec:
   template:
     metadata:
       labels:
-        app: sorter-api
+        app: sorter-website
     spec:
       containers:
-        - name: sorter-api
-          image: afcarvalho1991/sorter-backend:latest
+        - name: sorter-website
+          image: afcarvalho1991/sorter-website:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
@@ -40,10 +42,5 @@ spec:
               memory: 100Mi
               cpu: "0.25"
 
-            # args:
-            # - -cpus
-            # - "2"
-
       imagePullSecrets:
-        - name: regcred
-
+      - name: regcred

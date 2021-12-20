@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sorter-service-web
+  namespace: test
+  labels:
+    app: sorter-website
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      nodePort: 30002
+      protocol: TCP
+  selector:
+    app: sorter-website

@@ -1,0 +1,51 @@
+
+# docker login
+## kubectl create secret generic regcred  --from-file=.dockerconfigjson=/home/afcarvalho/.docker/config.json --type=kubernetes.io/dockerconfigjson
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sorter-service-backend
+  namespace: test
+
+spec:
+  replicas: 5
+  
+  selector: # is a list of labels that Pods must have in order for the Deployment to manage them
+    matchLabels:
+      app: sorter-api
+  
+  minReadySeconds: 10
+
+  strategy: # tells Kubernetes how to perform updates to the Pods managed by the Deployment.
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  
+  template:
+    metadata:
+      labels:
+        app: sorter-api
+    spec:
+      containers:
+        - name: sorter-api
+          image: afcarvalho1991/sorter-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001
+          resources:
+            limits:
+              memory: 500Mi
+              cpu: "1"
+            requests:
+              memory: 100Mi
+              cpu: "0.25"
+
+            # args:
+            # - -cpus
+            # - "2"
+
+      imagePullSecrets:
+      - name: regcred
+
