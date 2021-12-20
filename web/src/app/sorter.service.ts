@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SortService 
-{
+export class SorterService {
+
   // private backend_url:string = "http://127.0.0.1:5000" // this should be provided by a DNS or something :)
   private backend_url:string = "http://ec2-15-236-90-165.eu-west-3.compute.amazonaws.com:5002"
   constructor(private http: HttpClient ) { }
@@ -22,7 +20,7 @@ export class SortService
               // )
   }
   
-  public completed_sort(listNumbers) // TODO: listNumbers data type, return type
+  public completed_sort(listNumbers: any) // TODO: listNumbers data type, return type
   {
     const options = { params: new HttpParams().set("list" , JSON.stringify(listNumbers)) } ; 
     // console.log("options = ",options)
@@ -30,11 +28,11 @@ export class SortService
     return this.http  .get<Boolean>(this.backend_url + "/is_sorted", options)
   }
   
-  public requestNewList(list_size)
+  public requestNewList(list_size: string)
   {
     return this.http.get(this.backend_url + "/generate_list/" + list_size)
   }
-  public requestSort(sorting_algo:string, listNumbers, showState:boolean)
+  public requestSort(sorting_algo:string, listNumbers: any, showState:boolean)
   {
     const options = { params: new HttpParams().set("list" , JSON.stringify(listNumbers))
                                               .set("states", JSON.stringify(showState))

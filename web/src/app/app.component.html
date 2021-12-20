@@ -1,5 +1,14 @@
-<app-header></app-header>
+<span>
+    <label for="">Sorting Algorithm:</label>
+    <select class="form-control" >
+        <option *ngFor="let a of lst_algorithms" value="{{a}}">{{a}}</option>
+    </select>
+</span>
+<br>
+<br>
+<br>
 
-<div class="container">    
-    <router-outlet></router-outlet>
-</div>
+<label for="">List numbers:</label>
+<ul>
+    <li *ngFor="let a of list_numbers"> {{a}} </li>
+</ul>
