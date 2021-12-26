@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sorter-service-web
-  namespace: test
+  # namespace: test
   labels:
     app: sorter-website
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 80
       nodePort: 30002

@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: my-new-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    
+spec:
+  rules:
+  
+  - host: sorting-afc.duckdns.org
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: sorter-service-web
+            port:
+              number: 80
+
+  - host: api.sorting-afc.duckdns.org
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: sorter-service
+            port:
+              number: 80

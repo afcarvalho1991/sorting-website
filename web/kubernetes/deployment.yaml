@@ -6,7 +6,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sorter-service-web
-  namespace: test
+  # namespace: test
 
 spec:
   replicas: 5
