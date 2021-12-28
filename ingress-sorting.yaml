@@ -31,3 +31,20 @@ spec:
             name: sorter-service
             port:
               number: 5001
+
+  - host: elastic.sorting-afc.duckdns.org
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: elasticsearch-master
+            port:
+              number: 9200
+  tls:
+  - hosts:
+    - sorting-afc.duckdns.org
+    - api.sorting-afc.duckdns.org
+    - elastic.sorting-afc.duckdns.org
+    secretName: ingress-ssl

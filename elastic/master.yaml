@@ -1,0 +1,48 @@
+# master.yaml
+---
+clusterName: "elasticsearch"
+nodeGroup: "master"
+roles:
+  master: "true"
+  ingest: "true"
+  data: "true"
+replicas: 1
+
+# IF: replicas: 1
+discovery.type: single-node
+minimumMasterNodes: 1
+clusterHealthCheckParams: 'wait_for_status=yellow&timeout=1s'
+
+extraInitContainers:
+   - name: file-permissions
+     image: busybox
+     command: ['chown', '-R', '1000:1000', '/usr/share/elasticsearch/']
+     volumeMounts:
+     - mountPath: /usr/share/elasticsearch/data
+       name: elasticsearch-master
+     securityContext:
+       privileged: true
+       runAsUser: 0
+
+# Permit co-located instances for solitary minikube virtual machines.
+antiAffinity: "soft"
+
+# Shrink default JVM heap.
+esJavaOpts: "-Xmx128m -Xms128m"
+
+# Allocate smaller chunks of memory per pod.
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512M"
+  limits:
+    cpu: "1000m"
+    memory: "512M"
+
+# Request smaller persistent volumes.
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "linode-block-storage-retain"
+  resources:
+    requests:
+      storage: 100M
